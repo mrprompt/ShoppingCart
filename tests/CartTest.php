@@ -3,9 +3,9 @@
 namespace MrPrompt\ShoppingCart\Tests;
 
 use MrPrompt\ShoppingCart\Cart;
-use PHPUnit\Framework\TestCase;
 use MrPrompt\ShoppingCart\Contracts\CartInterface;
 use MrPrompt\ShoppingCart\Contracts\ItemInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * CartTest
