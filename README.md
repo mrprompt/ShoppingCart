@@ -1,5 +1,9 @@
 # ShoppingCart
 
+[![Build Status](https://travis-ci.org/mrprompt/ShoppingCart.svg?branch=master)](https://travis-ci.org/mrprompt/ShoppingCart)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mrprompt/ShoppingCart/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mrprompt/ShoppingCart/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/mrprompt/ShoppingCart/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mrprompt/ShoppingCart/?branch=master)
+
 A reusable shopping cart implementation.
 
 ### Install
