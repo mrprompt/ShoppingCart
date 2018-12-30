@@ -22,9 +22,13 @@
         }
     ],
     "autoload": {
-        "MrPrompt\\ShoppingCart\\": "./src"
+        "psr-4": {
+            "MrPrompt\\ShoppingCart\\": "src/"
+        }
     },
     "autoload-dev": {
-        "MrPrompt\\ShoppingCart\\Tests": "./tests"
+        "psr-4": {
+            "MrPrompt\\ShoppingCart\\Tests\\": "tests/"
+        }
     }
 }

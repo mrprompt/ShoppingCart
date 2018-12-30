@@ -3,12 +3,11 @@
 namespace MrPrompt\ShoppingCart\Tests;
 
 use MrPrompt\ShoppingCart\Item;
-use PHPUnit\Framework\TestCase;
 use MrPrompt\ShoppingCart\Contracts\ItemInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * ItemTest
- * @group group
  */
 class ItemTest extends TestCase
 {
