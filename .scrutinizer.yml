@@ -94,6 +94,16 @@ checks:
         verify_argument_usable_as_reference: true
         verify_property_names: true
 
+build:
+  nodes:
+    coverage:
+      tests:
+        override:
+          - command: ./vendor/bin/phpunit --coverage-clover clover.xml
+            coverage:
+              file: clover.xml
+              format: clover
+
 filter:
     excluded_paths:
         - tests/*
