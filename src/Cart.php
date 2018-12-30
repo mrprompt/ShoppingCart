@@ -8,9 +8,18 @@ use SplObjectStorage;
 
 class Cart extends SplObjectStorage implements CartInterface
 {
-    public function __construct(array $items = [])
+    private $id;
+
+    public function __construct(string $id, array $items = [])
     {
+        $this->id = $id;
+        
         array_walk($items, [ $this, 'attach']);
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
     
     public function addItem(ItemInterface $item): bool

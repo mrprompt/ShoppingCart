@@ -18,7 +18,8 @@ class CartTest extends TestCase
      */
     public function constructorWithoutParams()
     {
-        $cart = new Cart();
+        $id = uniqid();
+        $cart = new Cart($id);
 
         $this->assertInstanceOf(CartInterface::class, $cart);
         $this->assertCount(0, $cart);
@@ -36,10 +37,26 @@ class CartTest extends TestCase
             $this->createMock(ItemInterface::class),
         ];
 
-        $cart = new Cart($items);
+        $id = uniqid();
+        $cart = new Cart($id, $items);
 
         $this->assertInstanceOf(CartInterface::class, $cart);
         $this->assertCount(3, $cart);
+    }
+
+    /** 
+     * @test 
+     * @covers MrPrompt\ShoppingCart\Cart::__construct
+     * @covers MrPrompt\ShoppingCart\Cart::getId
+     */
+    public function getIdReturnIdAttribute()
+    {
+        $id = uniqid();
+
+        $cart = new Cart($id);
+
+        $this->assertInstanceOf(CartInterface::class, $cart);
+        $this->assertEquals($id, $cart->getId());
     }
 
     /** 
@@ -51,7 +68,9 @@ class CartTest extends TestCase
     {
         $item = $this->createMock(ItemInterface::class);
 
-        $cart = new Cart();
+        $id = uniqid();
+
+        $cart = new Cart($id);
         $cart->addItem($item);
 
         $this->assertInstanceOf(CartInterface::class, $cart);
@@ -68,7 +87,9 @@ class CartTest extends TestCase
         $item = $this->createMock(ItemInterface::class);
         $item2 = clone $item;
 
-        $cart = new Cart();
+        $id = uniqid();
+
+        $cart = new Cart($id);
         $cart->addItem($item);
         $cart->addItem($item);
         $cart->addItem($item2);
@@ -86,7 +107,9 @@ class CartTest extends TestCase
     {
         $item = $this->createMock(ItemInterface::class);
         
-        $cart = new Cart([ $item ]);
+        $id = uniqid();
+
+        $cart = new Cart($id, [ $item ]);
         $cart->removeItem($item);
 
         $this->assertInstanceOf(CartInterface::class, $cart);
@@ -102,8 +125,10 @@ class CartTest extends TestCase
     {
         $item = $this->createMock(ItemInterface::class);
         $item2 = clone $item;
+
+        $id = uniqid();
         
-        $cart = new Cart([ $item ]);
+        $cart = new Cart($id, [ $item ]);
         $result = $cart->removeItem($item2);
 
         $this->assertInstanceOf(CartInterface::class, $cart);
@@ -123,7 +148,9 @@ class CartTest extends TestCase
             $this->createMock(ItemInterface::class),
         ];
 
-        $cart = new Cart($items);
+        $id = uniqid();
+
+        $cart = new Cart($id, $items);
         $result = $cart->cleanUp();
         
         $this->assertTrue($result);
@@ -143,7 +170,9 @@ class CartTest extends TestCase
             $this->createMock(ItemInterface::class),
         ];
 
-        $cart = new Cart($items);
+        $id = uniqid();
+
+        $cart = new Cart($id, $items);
         $result = $cart->isEmpty();
         
         $this->assertFalse($result);
@@ -156,7 +185,9 @@ class CartTest extends TestCase
      */
     public function isEmptyWithEmptyCartReturnTrue()
     {
-        $cart = new Cart();
+        $id = uniqid();
+
+        $cart = new Cart($id);
         $result = $cart->isEmpty();
         
         $this->assertTrue($result);

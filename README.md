@@ -31,7 +31,9 @@ $items = [
     new Item(uniqid(), 5.00, 10),
 ];
 
-$cart = new Cart($items);
+$cartId = uniqid();
+
+$cart = new Cart($cartId, $items);
 ```
 
 #### Add items to cart
@@ -47,6 +49,9 @@ $itemQuantity = 30;
 
 $item = new Item($itemId, $itemPrice, $itemQuantity);
 
+$cartId = uniqid();
+
+$cart = new Cart($cartId);
 $cart->addItem($item);
 ```
 
@@ -63,6 +68,7 @@ $itemQuantity = 30;
 
 $item = new Item($itemId, $itemPrice, $itemQuantity);
 
+$cartId = uniqid();
 $cart = new Cart([ $item ]);
 $cart->removeItem($item);
 ```
@@ -80,7 +86,8 @@ $itemPrice = 1.99;
 $itemQuantity = 30;
 $item = new Item($itemId, $itemPrice, $itemQuantity);
 
-$cart = new Cart([ $item ]);
+$cartId = uniqid();
+$cart = new Cart($cartId, [ $item ]);
 echo $cart->count(); // === 1
 
 $cart->cleanUp();
@@ -101,7 +108,9 @@ $itemPrice = 1.99;
 $itemQuantity = 30;
 $item = new Item($itemId, $itemPrice, $itemQuantity);
 
-$cart = new Cart([ $item ]);
+$cartId = uniqid();
+
+$cart = new Cart($cartId, [ $item ]);
 echo $cart->isEmpty(); // === false
 
 $cart->cleanUp();
