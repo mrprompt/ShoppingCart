@@ -1,8 +1,8 @@
 language: php
+sudo: false
 
 env:
   global:
-    - CC_TEST_REPORTER_ID=86a09970f02b3f841b263963099a65adf9bf9e85ea72db88a1d5f5ac003d01f2
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 
 php:
@@ -12,21 +12,20 @@ php:
   - hhvm
 
 matrix:
+  fast_finish: true
   allow_failures:
     - php: nightly
     - php: hhvm
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - if [ $(phpenv version-name) = "7.1" ]; then ./cc-test-reporter before-build; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.1' ]]; then PHPUNIT_FLAGS="--coverage-clover ./clover.xml"; else PHPUNIT_FLAGS=""; fi
   
 install:
   - composer install --dev --prefer-dist -o
 
 script:
-  #- ./vendor/bin/phing
-  - ./vendor/bin/phpunit --coverage-clover clover.xml
+  - ./vendor/bin/phpunit $PHPUNIT_FLAGS
 
 after_script:
-    - if [ $(phpenv version-name) = "7.1" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --coverage-input-type clover --exit-code $TRAVIS_TEST_RESULT; fi
+    - wget https://scrutinizer-ci.com/ocular.phar
+    - if [ -f clover.xml ]; then php ocular.phar code-coverage:upload --format=php-clover ./clover.xml; fi
