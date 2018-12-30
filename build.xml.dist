@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model xlink:href="vendor/phing/phing/etc/phing-grammar.rng" 
+    type="application/xml" 
+    schematypens="http://relaxng.org/ns/structure/1.0" ?>
+<project name="DataStructure" default="build">
+    <property name="project.bindir" value="${project.basedir}/vendor/bin" />
+    <property name="project.tmpdir" value="${project.basedir}/tmp" />
+    <property name="project.logdir" value="${project.tmpdir}/log" />
+
+    <target name="build" description="Build application" depends="test, phpcs, phploc, pdepend, phpmd, phpcpd" />
+
+    <target name="test" description="Run all tests">
+        <exec executable="${project.bindir}/phpunit" passthru="true" checkreturn="true">
+            <arg value="--log-junit" />
+            <arg value="${project.logdir}/junit.xml" />
+            <arg value="--coverage-text=${project.logdir}/coverage.log" />
+            <arg value="--coverage-clover" />
+            <arg value="${project.logdir}/coverage.xml" />
+        </exec>
+    </target>
+
+    <target name="lint" description="Perform syntax check of source code files">
+        <apply executable="php" failonerror="true" passthru="true" checkreturn="false">
+            <arg value="-l" />
+
+            <fileset dir="${project.basedir}/src/">
+                <include name="**/*.php" />
+            </fileset>
+        </apply>
+    </target>
+
+    <target name="phploc" description="Measure project size using PHPLOC and log result in CSV and XML format.">
+        <exec executable="${project.bindir}/phploc">
+            <arg value="--verbose" />
+            <arg value="--count-tests" />
+            <arg value="--no-interaction" />
+            <arg value="--log-csv" />
+            <arg path="${project.logdir}/phploc.csv" />
+            <arg value="--log-xml" />
+            <arg path="${project.logdir}/phploc.xml" />
+            <arg path="${project.basedir}/src" />
+        </exec>
+    </target>
+
+    <target name="pdepend" description="Calculate software metrics using PHP_Depend and log result in XML format.">
+        <exec executable="${project.bindir}/pdepend" passthru="true" checkreturn="false">
+            <arg value="--jdepend-xml=${project.logdir}/jdepend.xml" />
+            <arg value="--jdepend-chart=${project.logdir}/dependencies.svg" />
+            <arg value="--overview-pyramid=${project.logdir}/overview-pyramid.svg" />
+            <arg path="${project.basedir}/src" />
+        </exec>
+    </target>
+
+    <target name="phpmd" description="Perform project mess detection using PHPMD and log result in XML format.">
+        <exec executable="${project.bindir}/phpmd" passthru="true" checkreturn="false">
+            <arg path="${project.basedir}/src" />
+            <arg value="xml" />
+            <arg path="cleancode,codesize,unusedcode" />
+            <arg value="--reportfile" />
+            <arg path="${project.logdir}/pmd.xml" />
+        </exec>
+    </target>
+
+    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and log result in XML format.">
+        <exec executable="${project.bindir}/phpcs" passthru="true" checkreturn="false">
+            <arg value="-p" />
+            <arg value="--colors" />
+            <arg value="--report=checkstyle" />
+            <arg value="--report-file=${project.logdir}/checkstyle.xml" />
+            <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
+            <arg value="--ignore=public" />
+            <arg value="--ignore=vendor" />
+
+            <arg path="${project.basedir}/src" />
+        </exec>
+    </target>
+
+    <target name="phpcpd" description="Find duplicate code using PHPCPD and log result in XML format.">
+        <exec executable="${project.bindir}/phpcpd" passthru="true" checkreturn="false">
+            <arg value="--progress" />
+            <arg value="--log-pmd" />
+            <arg path="${project.logdir}/phpcpd.xml" />
+            <arg path="${project.basedir}/src" />
+        </exec>
+    </target>
+</project>
