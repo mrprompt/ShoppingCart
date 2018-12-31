@@ -55,4 +55,15 @@ class Cart extends SplObjectStorage implements CartInterface
     {
         return $this->count() === 0;
     }
+
+    public function sum(): float
+    {
+        $total = 0.00;
+        
+        foreach ($this as $item) { 
+            $total += $item->getQuantity() * $item->getPrice();
+        }
+
+        return $total;
+    }
 }

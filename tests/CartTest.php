@@ -3,9 +3,9 @@
 namespace MrPrompt\ShoppingCart\Tests;
 
 use MrPrompt\ShoppingCart\Cart;
+use PHPUnit\Framework\TestCase;
 use MrPrompt\ShoppingCart\Contracts\CartInterface;
 use MrPrompt\ShoppingCart\Contracts\ItemInterface;
-use PHPUnit\Framework\TestCase;
 
 /**
  * CartTest
@@ -191,5 +191,46 @@ class CartTest extends TestCase
         $result = $cart->isEmpty();
         
         $this->assertTrue($result);
+    }
+
+    /** 
+     * @test 
+     * @covers MrPrompt\ShoppingCart\Cart::__construct
+     * @covers MrPrompt\ShoppingCart\Cart::sum
+     */
+    public function sumReturnTotalFromItems()
+    {
+        $mockOne = $this->getMockBuilder(ItemInterface::class)
+                        ->disableOriginalConstructor()
+                        ->setMethods([
+                            'getId', 
+                            'getQuantity', 
+                            'setQuantity', 
+                            'getPrice',
+                            'setPrice',
+                            ])
+                        ->getMock();
+        
+        $mockOne->method('getQuantity')
+                ->will($this->returnValue(1));
+        
+        $mockOne->method('getPrice')
+                ->will($this->returnValue(5.00));
+
+        $mockTwo = clone $mockOne;
+        $mockThree = clone $mockOne;
+        
+        $items = [ 
+            $mockOne,
+            $mockTwo,
+            $mockThree
+        ];
+
+        $id = uniqid();
+        $cart = new Cart($id, $items);
+        $sum = $cart->sum();
+
+        $this->assertInstanceOf(CartInterface::class, $cart);
+        $this->assertEquals(15.00, $sum);
     }
 }

@@ -9,4 +9,5 @@ interface CartInterface
     public function removeItem(ItemInterface $item): bool;
     public function cleanUp(): bool;
     public function isEmpty(): bool;
+    public function sum(): float;
 }
